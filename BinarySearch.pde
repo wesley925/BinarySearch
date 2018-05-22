@@ -23,27 +23,64 @@ private Item[] store =
 };                             
 public int linearSearch(int catNumToFind)
 {
-  //complete this method
+  for( int i=0; i < store.length; i++){
+    if (store[i].getCatNum() == catNumToFind){
+      return store[i].getInventory();
+    }
+  }
   return -1;
 }
 public int recursiveLinearSearch(int catNumToFind, int startIndex)
 {
-  //complete this method
-  return -1;
+  
+  if (startIndex == store.length){
+  return -1;}
+  if (store[startIndex].getCatNum() == catNumToFind) 
+    {return store[startIndex].getInventory();}
+  return recursiveLinearSearch (catNumToFind, startIndex+1);
 }
 public int binarySearch(int catNumToFind)
-{
-  //complete this method    
+{//set min and max bound
+   int i = store.length/2;
+   int min = 0;
+   int max = store.length;
+   int overflow = 0;
+  while (true) {
+    if (overflow >= 5) {break;}
+  if (store[i].getCatNum() == catNumToFind) {
+    return store[i].getInventory();}
+  if (store[i].getCatNum() > catNumToFind) {
+    max = (max+min)/2;
+    i = (int)(i = (max+min)/2); 
+    overflow ++;
+  }
+  if (store[i].getCatNum() < catNumToFind) {
+    
+    min = (min+max)/2;
+    i = (int)(i = (max+min)/2); 
+    overflow++;
+  }
+
+  
+}  
   return -1;
 }
+int overflowb = 0;
 public int recursiveBinarySearch(int catNumToFind, int nLow, int nHigh)
 {
-  //complete this method    
-  return -1;
+   int i = (nLow+nHigh)/2;
+   if (nLow > nHigh) {return -1;}
+   if (store[i].getCatNum() < catNumToFind) {
+      return recursiveBinarySearch(catNumToFind, i+1, nHigh);
+   }
+   else if (store[i].getCatNum() > catNumToFind) {
+      return recursiveBinarySearch(catNumToFind, nLow, i-1);
+   }
+   else return store[i].getInventory();
 }
 public void setup()
 {
-  int[] tests = {0, 183, 184, 2370, 15320, 19967, 19968};
+  int[] tests = {0, 183, 184, 2370, 15320, 19967, 196,206,2370,7282,8303,12328,12705,13066,14088,15320,15814};
   System.out.println();
   System.out.println("Testing Non-Recursive Linear Search");
   System.out.println("=====================");
@@ -71,7 +108,7 @@ public void setup()
   System.out.println("===================================");
   for (int i = 0; i < tests.length; i++)
   {
-
+    
     if (binarySearch(tests[i]) != -1)
       System.out.println("Catalog #"+tests[i]+" has "+binarySearch(tests[i]) + " in stock");
     else
@@ -82,7 +119,7 @@ public void setup()
   System.out.println("===============================");
   for (int i = 0; i < tests.length; i++)
   {
-
+    overflowb = 0;
     if (recursiveBinarySearch(tests[i], 0, store.length - 1) != -1)
       System.out.println("Catalog #"+tests[i]+" has "+recursiveBinarySearch(tests[i], 0, store.length - 1) + " in stock");
     else
@@ -94,9 +131,3 @@ public void draw()
 {
   //empty!
 }
-
-
-
-
-
-
